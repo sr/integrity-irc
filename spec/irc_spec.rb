@@ -1,8 +1,5 @@
-require "rubygems"
-require "integrity"
+require File.dirname(__FILE__) +  "/../lib/notifier/irc"
 require Integrity.root / "spec" / "spec_helper"
-
-require File.dirname(__FILE__) / ".." / "lib" / "notifier" / "irc"
 
 describe Integrity::Notifier::IRC do
   include AppSpecHelper
@@ -14,26 +11,19 @@ describe Integrity::Notifier::IRC do
     Integrity::Notifier::IRC
   end
 
-  describe "notifying the world of a build" do
-    before { klass.stub!(:new).and_return(notifier) }
-    
-    it "should instantiate a notifier with the given build and config" do
-      klass.should_receive(:new).with(mock_build, {}).and_return(notifier)
-      klass.notify_of_build(mock_build, notifier_config)
-    end
-  
-    it "should pass the notifier options to the notifier" do
-      klass.should_receive(:new).with(anything, notifier_config).and_return(notifier)
-      klass.notify_of_build(mock_build, notifier_config)
-    end
-    
-    it "should deliver the notification" do
-      notifier.should_receive(:deliver!)
-      klass.notify_of_build(mock_build, notifier_config)
-    end
+  def notifier_config(opts={})
+    {"uri" =>"irc://irc.freenode.net:6667/integrity"}
   end
-  
-  describe "generating a form for configuration" do
+
+  def notifier
+    @notifier ||= Integrity::Notifier::IRC.new(mock_build, notifier_config)
+  end
+
+  it "should have an uri" do
+    notifier.uri.should == "irc://irc.freenode.net:6667/integrity"
+  end
+
+  describe "Generating a form for configuration" do
     describe "with a field for the IRC URI" do
       it "should have the proper name, id and label and a default value" do
         the_form.should have_textfield("irc_notifier_uri").
@@ -44,8 +34,38 @@ describe Integrity::Notifier::IRC do
       
       it "should use the config's 'uri' value if available" do
         the_form(:config => { "uri" => "irc://irc.freenode.net/integrity" }).
-          should have_textfield("irc_notifier_uri").with_value("irc://irc.freenode.net/integrity")
+          should have_textfield("irc_notifier_uri").
+          with_value("irc://irc.freenode.net/integrity")
       end
+    end
+  end
+
+  describe "Delevering the build" do
+    def do_notify
+      notifier.deliver!
+    end
+
+    before do
+      @channel = mock("channel", :say => "")
+      ShoutBot.stub!(:shout).and_yield(@channel)
+    end
+
+    it "should connect to the given URI as IntegrityBot" do
+      ShoutBot.should_receive(:shout).
+        with(notifier_config["uri"], {:as => "IntegrityBot"})
+      do_notify
+    end
+
+    it "should give the build status" do
+      notifier.should_receive(:short_message).and_return("foobar")
+      @channel.should_receive(:say).with("foobar")
+      do_notify
+    end
+
+    it "should give the build url" do
+      notifier.should_receive(:build_url).and_return("http://example.org")
+      @channel.should_receive(:say).with("http://example.org")
+      do_notify
     end
   end
 end

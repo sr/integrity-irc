@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'integrity'
+require 'integrity' unless defined?(:Integrity)
 require 'shout-bot'
 
 module Integrity
@@ -12,12 +12,15 @@ module Integrity
       end
 
       def initialize(build, config={})
-        @uri = config.delete(:uri)
+        @uri = config.delete("uri")
         super
       end
 
       def deliver!
-        # do the ShoutBot dance here
+        ShoutBot.shout(uri, :as => "IntegrityBot") do |channel|
+          channel.say short_message
+          channel.say build_url
+        end
       end
     end
   end
