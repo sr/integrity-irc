@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'integrity' unless defined?(:Integrity)
+require 'integrity' unless defined?(Integrity)
 require 'shout-bot'
 
 module Integrity
