@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name              = 'integrity-irc'
-  s.version           = '0.0.1'
+  s.version           = '0.0.2'
   s.date              = '2008-11-20'
   s.summary           = 'IRC notifier for the Integrity continuous integration server'
   s.summary           = 'IRC notifier for the Integrity continuous integration server'
