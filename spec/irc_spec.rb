@@ -29,7 +29,7 @@ describe Integrity::Notifier::IRC do
         the_form.should have_textfield("irc_notifier_uri").
           named("notifiers[IRC][uri]").
           with_label("Send to").
-          with_value("irc://irc.freenode.net:6667/integrity")
+          with_value("irc://irc.freenode.net:6667/test")
       end
       
       it "should use the config's 'uri' value if available" do
