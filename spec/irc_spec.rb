@@ -56,9 +56,10 @@ describe Integrity::Notifier::IRC do
       do_notify
     end
 
-    it "should give the build status" do
-      notifier.should_receive(:short_message).and_return("foobar")
-      @channel.should_receive(:say).with("foobar")
+    it "should give the build status and project name" do
+      notifier.build.project.should_receive(:name).and_return("Integrity")
+      notifier.should_receive(:short_message).and_return("short message")
+      @channel.should_receive(:say).with("Integrity: short message")
       do_notify
     end
 
