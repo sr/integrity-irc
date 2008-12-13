@@ -8,7 +8,11 @@ module Integrity
       attr_reader :uri
       
       def self.to_haml
-        File.read File.dirname(__FILE__) / "config.haml"
+        <<-HAML
+%p.normal
+  %label{ :for => 'irc_notifier_uri' } Send to
+  %input.text#irc_notifier_uri{ :name => 'notifiers[IRC][uri]', :type => 'text', :value => config['uri'] || 'irc://irc.freenode.net:6667/test' }
+        HAML
       end
 
       def initialize(build, config={})
