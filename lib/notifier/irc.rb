@@ -23,7 +23,7 @@ module Integrity
       def deliver!
         ShoutBot.shout(uri) do |channel|
           channel.say "#{build.project.name}: #{short_message}"
-          channel.say build_url
+          channel.say commit_url
         end
       end
     end
