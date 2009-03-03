@@ -11,7 +11,7 @@ module Integrity
         <<-HAML
 %p.normal
   %label{ :for => 'irc_notifier_uri' } Send to
-  %input.text#irc_notifier_uri{ :name => 'notifiers[IRC][uri]', :type => 'text', :value => config['uri'] || 'irc://irc.freenode.net:6667/test' }
+  %input.text#irc_notifier_uri{ :name => 'notifiers[IRC][uri]', :type => 'text', :value => config['uri'] || 'irc://IntegrityBot@irc.freenode.net:6667/#test' }
         HAML
       end
 
@@ -21,7 +21,7 @@ module Integrity
       end
 
       def deliver!
-        ShoutBot.shout(uri, :as => "IntegrityBot") do |channel|
+        ShoutBot.shout(uri) do |channel|
           channel.say "#{build.project.name}: #{short_message}"
           channel.say build_url
         end
