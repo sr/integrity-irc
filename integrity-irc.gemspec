@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.summary           = 'IRC notifier for the Integrity continuous integration server'
   s.homepage          = 'http://integrityapp.com'
   s.email             = 'simon@rozet.name'
-  s.authors           = ['Simon Rozet']
+  s.authors           = ['Simon Rozet', 'Harry Vangberg']
   s.has_rdoc          = false
   s.files             = %w[README.markdown lib/notifier/irc.rb]
   s.test_files        = %w[test/irc_test.rb]
