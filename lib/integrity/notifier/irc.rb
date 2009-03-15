@@ -1,6 +1,4 @@
-require 'rubygems'
-require 'integrity' unless defined?(Integrity)
-require 'shout-bot'
+require "shout-bot"
 
 module Integrity
   class Notifier
