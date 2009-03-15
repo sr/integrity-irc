@@ -4,12 +4,16 @@ module Integrity
   class Notifier
     class IRC < Notifier::Base
       attr_reader :uri
-      
+
       def self.to_haml
         <<-HAML
 %p.normal
-  %label{ :for => 'irc_notifier_uri' } Send to
-  %input.text#irc_notifier_uri{ :name => 'notifiers[IRC][uri]', :type => 'text', :value => config['uri'] || 'irc://IntegrityBot@irc.freenode.net:6667/#test' }
+  %label{ :for => "irc_notifier_uri" } Send to
+  %input.text#irc_notifier_uri{                          |
+    :name => "notifiers[IRC][uri]",                      |
+    :type => "text",                                     |
+    :value => config["uri"] ||                           |
+      "irc://IntegrityBot@irc.freenode.net:6667/#test" } |
         HAML
       end
 
