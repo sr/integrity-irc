@@ -7,7 +7,7 @@ begin
 rescue LoadError
 end
 
-require File.dirname(__FILE__) + "/../lib/notifier/irc"
+require File.dirname(__FILE__) + "/../lib/integrity/notifier/irc"
 
 class IRCTest < Test::Unit::TestCase
   include RR::Adapters::TestUnit
