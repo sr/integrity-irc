@@ -1,6 +1,6 @@
 require "test/unit"
 require "rr"
-require "integrity/notifier/test_helpers"
+require "integrity/notifier/test"
 
 begin
   require "redgreen"
@@ -11,7 +11,7 @@ require File.dirname(__FILE__) + "/../lib/notifier/irc"
 
 class IRCTest < Test::Unit::TestCase
   include RR::Adapters::TestUnit
-  include Integrity::Notifier::TestHelpers
+  include Integrity::Notifier::Test
 
   def setup
     setup_database
@@ -28,6 +28,11 @@ class IRCTest < Test::Unit::TestCase
   def test_send_notification
     config = { "uri" => "irc://foo:bar@irc.freenode.net/test" }
     stub(ShoutBot).shout("irc://foo:bar@irc.freenode.net/test") { nil }
-    Integrity::Notifier::IRC.new(commit, config).deliver!
+    Integrity::Notifier::IRC.new(Integrity::Commit.gen, config).deliver!
+  end
+
+  def test_notification_full_message
+    assert notification_successful.include?("successful")
+    assert notification_failed.include?("failed")
   end
 end
